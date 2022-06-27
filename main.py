@@ -27,10 +27,24 @@ def sumAvailableDifferentPaths(board, snake, depth):
         return 1
     
     if tryLeft(snake) == True:
-        newSnake = deepcopy(snake)
-        newSnake[1:] = newSnake[:-1]
+        newSnake = [snake[0].copy()] + deepcopy(snake)[:-1]
         newSnake[0][1] = newSnake[0][1]-1
-        return sumAvailableDifferentPaths(board, snake, depth-1)
+        leftSum = sumAvailableDifferentPaths(board, newSnake, depth-1)
+    
+    if tryUp(snake) == True:
+        newSnake = [snake[0].copy()] + deepcopy(snake)[:-1]
+        newSnake[0][0] = newSnake[0][0]-1
+        leftSum = sumAvailableDifferentPaths(board, newSnake, depth-1)
+
+    if tryRight(board[1]-1 , snake) == True:
+        newSnake = [snake[0].copy()] + deepcopy(snake)[:-1]
+        newSnake[0][1] = newSnake[0][1]+1
+        leftSum = sumAvailableDifferentPaths(board, newSnake, depth-1)
+
+    if tryDown(board[0]-1, snake) == True:
+        newSnake = [snake[0].copy()] + deepcopy(snake)[:-1]
+        newSnake[0][0] = newSnake[0][0]-1
+        leftSum = sumAvailableDifferentPaths(board, newSnake, depth-1)
 
 
 def tryLeft(snake):
