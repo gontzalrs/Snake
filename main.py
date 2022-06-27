@@ -55,18 +55,21 @@ def sumAvailableDifferentPaths(board, snake, depth, previousMovement):
     
     upSum = 0
     if previousMovement != "D" and tryUp(snake) == True:
+        #Creates a copy of the snake after it moves up
         newSnake = [snake[0].copy()] + deepcopy(snake)[:-1]
         newSnake[0][0] = newSnake[0][0]-1
         upSum = sumAvailableDifferentPaths(board, newSnake, depth-1, "U")
 
     rightSum = 0
     if previousMovement != "L" and tryRight(board[1]-1 , snake) == True:
+        #Creates a copy of the snake after it moves right
         newSnake = [snake[0].copy()] + deepcopy(snake)[:-1]
         newSnake[0][1] = newSnake[0][1]+1
         rightSum = sumAvailableDifferentPaths(board, newSnake, depth-1, "R")
 
     downSum = 0
     if previousMovement != "U" and tryDown(board[0]-1, snake) == True:
+        #Creates a copy of the snake after it moves down
         newSnake = [snake[0].copy()] + deepcopy(snake)[:-1]
         newSnake[0][0] = newSnake[0][0]+1
         downSum = sumAvailableDifferentPaths(board, newSnake, depth-1, "D")
@@ -84,8 +87,9 @@ def selfIntersects(snake, nextHeadPosition):
     nextHeadPosition : 2-dimensional array of integers
         Position the head of the snake is attempting to take.
     """
-
-    for bodyPartPosition in snake[1:-1]:
+    # Last element of the list will be ignored since the tail will get out of
+    # its current position
+    for bodyPartPosition in snake[1:-1]: 
         if nextHeadPosition == bodyPartPosition:
             return True
     
@@ -103,9 +107,11 @@ def tryLeft(snake):
         Position of each snake bodypart on the board.
         3 <= snake length <= 7    
     """
+    # This If checks whether the snake will get out of borders or not
     if snake[0][1] == 0:
         return False
     
+    # Now the self intersection will be checked, using next head position
     nextHeadPosition = snake[0].copy()
     nextHeadPosition[1] = nextHeadPosition[1]-1
     return not selfIntersects(snake, nextHeadPosition)
@@ -122,9 +128,11 @@ def tryUp(snake):
         Position of each snake bodypart on the board.
         3 <= snake length <= 7    
     """
+    # This If checks whether the snake will get out of borders or not
     if snake[0][0] == 0:
         return False
     
+    # Now the self intersection will be checked, using next head position
     nextHeadPosition = snake[0].copy()
     nextHeadPosition[0] = nextHeadPosition[0]-1
     return not selfIntersects(snake, nextHeadPosition)
@@ -141,9 +149,11 @@ def tryRight(lastColumnIndex, snake):
         Position of each snake bodypart on the board.
         3 <= snake length <= 7    
     """
+    # This If checks whether the snake will get out of borders or not
     if snake[0][1] == lastColumnIndex:
         return False
     
+    # Now the self intersection will be checked, using next head position
     nextHeadPosition = snake[0].copy()
     nextHeadPosition[1] = nextHeadPosition[1]+1
     return not selfIntersects(snake, nextHeadPosition)
@@ -160,14 +170,16 @@ def tryDown(lastRowIndex, snake):
         Position of each snake bodypart on the board.
         3 <= snake length <= 7    
     """
+    # This If checks whether the snake will get out of borders or not
     if snake[0][0] == lastRowIndex:
         return False
     
+    # Now the self intersection will be checked, using next head position
     nextHeadPosition = snake[0].copy()
     nextHeadPosition[0] = nextHeadPosition[0]+1
     return not selfIntersects(snake, nextHeadPosition)
 
-
+# These 3 lines test the code with the given acceptance tests
 print("Should be 7 -> ", numberOfAvailableDifferentPaths([4, 3], [[2,2], [3,2], [3,1], [3,0], [2,0], [1,0], [0,0]], 3))    
 print("Should be 1 -> ", numberOfAvailableDifferentPaths([2, 3], [[0,2], [0,1], [0,0], [1,0], [1,1], [1,2]], 10))    
 print("Should be 81 -> ", numberOfAvailableDifferentPaths([10, 10], [[5,5], [5,4], [4,4], [4,5]], 4))    
