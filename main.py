@@ -18,36 +18,54 @@ def numberOfAvailableDifferentPaths(board, snake, depth):
         1 <= depth <= 20
     """
    
-    return sumAvailableDifferentPaths(board, snake, depth)
+    return sumAvailableDifferentPaths(board, snake, depth, "N")
 
-def sumAvailableDifferentPaths(board, snake, depth):
+def sumAvailableDifferentPaths(board, snake, depth, previousMovement):
+    """Recursively calls this same function for all the cases where the 
+    snake can move, reducing depth in 1, and adds up all valid paths for
+    each direction.
+    
+    Parameters
+    ----------
+    board : 2-dimensional array of integers
+        Dimensions of the board -> [rows, columns].
+    snake : array of 2-dimensional arrays 
+        Position of each snake bodypart on the board.
+        3 <= snake length <= 7
+    depth : integer
+        Number of steps that the path has to take.
+        1 <= depth <= 20
+    previousMovement : direction of the movement just done.
+        Its value is L if previous movement was to the left, R if right,
+        U if up and D if down. It can also be N (refering to None) for the 
+        first call of the function.
+    """
     if depth == 0:
         return 1
 
     leftSum = 0
-    a = tryLeft(snake)
-    if tryLeft(snake) == True:
+    if previousMovement != "R" and tryLeft(snake) == True:
         newSnake = [snake[0].copy()] + deepcopy(snake)[:-1]
         newSnake[0][1] = newSnake[0][1]-1
-        leftSum = sumAvailableDifferentPaths(board, newSnake, depth-1)
+        leftSum = sumAvailableDifferentPaths(board, newSnake, depth-1, "L")
     
     upSum = 0
-    if tryUp(snake) == True:
+    if previousMovement != "D" and tryUp(snake) == True:
         newSnake = [snake[0].copy()] + deepcopy(snake)[:-1]
         newSnake[0][0] = newSnake[0][0]-1
-        upSum = sumAvailableDifferentPaths(board, newSnake, depth-1)
+        upSum = sumAvailableDifferentPaths(board, newSnake, depth-1, "U")
 
     rightSum = 0
-    if tryRight(board[1]-1 , snake) == True:
+    if previousMovement != "L" and tryRight(board[1]-1 , snake) == True:
         newSnake = [snake[0].copy()] + deepcopy(snake)[:-1]
         newSnake[0][1] = newSnake[0][1]+1
-        rightSum = sumAvailableDifferentPaths(board, newSnake, depth-1)
+        rightSum = sumAvailableDifferentPaths(board, newSnake, depth-1, "R")
 
     downSum = 0
-    if tryDown(board[0]-1, snake) == True:
+    if previousMovement != "U" and tryDown(board[0]-1, snake) == True:
         newSnake = [snake[0].copy()] + deepcopy(snake)[:-1]
         newSnake[0][0] = newSnake[0][0]+1
-        downSum = sumAvailableDifferentPaths(board, newSnake, depth-1)
+        downSum = sumAvailableDifferentPaths(board, newSnake, depth-1, "D")
     
     return leftSum+upSum+rightSum+downSum
 
@@ -146,5 +164,6 @@ def tryDown(lastRowIndex, snake):
     return not selfIntersects(snake, nextHeadPosition)
 
 
-print("numberOfAvailableDifferentPaths = ")    
-print(numberOfAvailableDifferentPaths([2, 3], [[0,2], [0,1], [0,0], [1,0], [1,1], [1,2]], 10))
+print("Should be 7 -> ", numberOfAvailableDifferentPaths([4, 3], [[2,2], [3,2], [3,1], [3,0], [2,0], [1,0], [0,0]], 3))    
+print("Should be 1 -> ", numberOfAvailableDifferentPaths([2, 3], [[0,2], [0,1], [0,0], [1,0], [1,1], [1,2]], 10))    
+print("Should be 81 -> ", numberOfAvailableDifferentPaths([10, 10], [[5,5], [5,4], [4,4], [4,5]], 4))    
