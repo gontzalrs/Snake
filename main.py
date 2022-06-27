@@ -24,6 +24,9 @@ def sumAvailableDifferentPaths(board, snake, depth, previousMovement):
     """Recursively calls this same function for all the cases where the 
     snake can move, reducing depth in 1, and adds up all valid paths for
     each direction.
+
+    When depth equals 0, it means that the snake is able to make the current 
+    path and 1 is returned.
     
     Parameters
     ----------
@@ -45,6 +48,7 @@ def sumAvailableDifferentPaths(board, snake, depth, previousMovement):
 
     leftSum = 0
     if previousMovement != "R" and tryLeft(snake) == True:
+        #Creates a copy of the snake after it moves left
         newSnake = [snake[0].copy()] + deepcopy(snake)[:-1]
         newSnake[0][1] = newSnake[0][1]-1
         leftSum = sumAvailableDifferentPaths(board, newSnake, depth-1, "L")
