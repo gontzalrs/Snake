@@ -1,8 +1,9 @@
 
 from copy import deepcopy
 
-
-
+def main():
+    print("numberOfAvailableDifferentPaths = ")    
+    print(numberOfAvailableDifferentPaths([2, 3], [[0,2], [0,1], [0,0], [1,0], [1,1], [1,2]], 10))
 
 def numberOfAvailableDifferentPaths(board, snake, depth):
     """Returns the available number of Paths for the given snake on the given board, 
@@ -25,26 +26,33 @@ def numberOfAvailableDifferentPaths(board, snake, depth):
 def sumAvailableDifferentPaths(board, snake, depth):
     if depth == 0:
         return 1
-    
+
+    leftSum = 0
+    a = tryLeft(snake)
     if tryLeft(snake) == True:
         newSnake = [snake[0].copy()] + deepcopy(snake)[:-1]
         newSnake[0][1] = newSnake[0][1]-1
         leftSum = sumAvailableDifferentPaths(board, newSnake, depth-1)
     
+    upSum = 0
     if tryUp(snake) == True:
         newSnake = [snake[0].copy()] + deepcopy(snake)[:-1]
         newSnake[0][0] = newSnake[0][0]-1
-        leftSum = sumAvailableDifferentPaths(board, newSnake, depth-1)
+        upSum = sumAvailableDifferentPaths(board, newSnake, depth-1)
 
+    rightSum = 0
     if tryRight(board[1]-1 , snake) == True:
         newSnake = [snake[0].copy()] + deepcopy(snake)[:-1]
         newSnake[0][1] = newSnake[0][1]+1
-        leftSum = sumAvailableDifferentPaths(board, newSnake, depth-1)
+        rightSum = sumAvailableDifferentPaths(board, newSnake, depth-1)
 
+    downSum = 0
     if tryDown(board[0]-1, snake) == True:
         newSnake = [snake[0].copy()] + deepcopy(snake)[:-1]
         newSnake[0][0] = newSnake[0][0]-1
-        leftSum = sumAvailableDifferentPaths(board, newSnake, depth-1)
+        downSum = sumAvailableDifferentPaths(board, newSnake, depth-1)
+    
+    return leftSum+upSum+rightSum+downSum
 
 
 def tryLeft(snake):
@@ -137,10 +145,7 @@ def selfIntersects(snake, nextHeadPosition):
 
     for bodyPartPosition in snake[1:-1]:
         if nextHeadPosition == bodyPartPosition:
-            return False
+            return True
     
-    return True
-
-
-    
+    return False
 
