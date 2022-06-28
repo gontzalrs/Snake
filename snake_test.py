@@ -18,6 +18,39 @@ class snakeTest(unittest.TestCase):
         self.assertFalse(s.selfIntersects([[1,1],[2,1],[2,0],[1,0]], [1,0]))
 
     # Tests for tryLeft
+    def test_tryLeft(self):
+        self.assertTrue(s.tryLeft([[0,1],[0,2],[0,3]]));
+        self.assertTrue(s.tryLeft([[0,1],[1,1],[1,2]]));
+        self.assertTrue(s.tryLeft([[0,1],[1,1],[1,0],[0,0]]));
+        self.assertFalse(s.tryLeft([[1,1],[2,1],[2,0],[1,0],[0,0]]));
+        self.assertFalse(s.tryLeft([[0,0],[1,0],[2,0]]));
+        self.assertFalse(s.tryLeft([[1,0],[1,1],[1,2]]));
+
     # Tests for tryUp
+    def test_tryUp(self):
+        self.assertTrue(s.tryUp([[1,1],[1,0],[0,0],[0,1]]));
+        self.assertTrue(s.tryUp([[1,0],[2,0],[3,0]]));
+        self.assertTrue(s.tryUp([[1,0],[1,1],[1,2]]));
+        self.assertFalse(s.tryUp([[0,1],[0,2],[0,3]]));
+        self.assertFalse(s.tryUp([[0,1],[1,1],[1,2]]));
+        self.assertFalse(s.tryUp([[1,1],[1,0],[0,0],[0,1],[0,2]]));
+    
     # Tests for tryRight
+    def test_tryRight(self):
+        self.assertTrue(s.tryRight(2, [[0,1],[1,1],[1,2]]))
+        self.assertTrue(s.tryRight(2, [[0,1],[1,1],[1,2],[0,2]]))
+        self.assertTrue(s.tryRight(2, [[3,0],[2,0],[1,0]]))
+        self.assertFalse(s.tryRight(2, [[0,2],[0,1],[1,1],[1,2]]))
+        self.assertFalse(s.tryRight(2, [[1,1],[2,1],[2,2],[1,2],[0,2]]))
+        self.assertFalse(s.tryRight(3, [[0,3],[0,2],[0,1],[0,0]]))
+        
     # Tests for tryDown
+    def test_tryDown(self):
+        self.assertTrue(s.tryDown(2, [[0,1],[0,2],[1,2]]))
+        self.assertTrue(s.tryDown(2, [[0,1],[0,2],[1,2],[1,1]]))
+        self.assertTrue(s.tryDown(3, [[2,0],[1,0],[0,0]]))
+        self.assertFalse(s.tryDown(3, [[0,2],[0,1],[1,1],[1,2],[1,3]]))
+        self.assertFalse(s.tryDown(2, [[1,1],[2,1],[2,2],[1,2],[0,2]]))
+        self.assertFalse(s.tryDown(3, [[3,0],[3,1],[3,2],[3,3]]))
+
+        
